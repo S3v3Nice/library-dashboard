@@ -16,9 +16,8 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('patronymic');
-            $table->foreignId('card_id')
-                  ->constrained('library_cards')
-                  ->cascadeOnDelete();
+            $table->date('library_card_issue_date');
+            $table->date('library_card_expiry_date')->nullable();
         });
     }
 

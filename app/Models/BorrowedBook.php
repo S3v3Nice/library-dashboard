@@ -44,6 +44,8 @@ class BorrowedBook extends Model
         'actual_return_date' => 'date',
     ];
 
+    public $timestamps = false;
+
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);

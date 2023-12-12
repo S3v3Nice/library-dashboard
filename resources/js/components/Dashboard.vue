@@ -17,7 +17,7 @@ const sections = [
   },
   {
     name: 'Жанры',
-    icon: 'bi bi-person',
+    icon: 'bi bi-bookmark',
     route: 'genres',
   },
   {
@@ -80,7 +80,6 @@ const currentRoute = computed(() => useRoute().name);
 <style scoped>
 #sidebar {
   height: 100%;
-  padding-top: 20px;
 }
 
 .sidebar-header {

@@ -13,7 +13,6 @@ const user = computed(() => {
 })
 
 async function logout() {
-  await axios.get('/sanctum/csrf-cookie')
   await axios.post('/logout').then(() => {
     store.dispatch('auth/reset')
     router.push({name: 'login'})

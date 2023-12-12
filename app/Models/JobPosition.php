@@ -31,6 +31,8 @@ class JobPosition extends Model
         'salary',
     ];
 
+    public $timestamps = false;
+
     public function employees(): HasMany
     {
         return $this->hasMany(Employee::class);

@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property string $first_name
- * @property int $last_name
- * @property int $patronymic
+ * @property string $last_name
+ * @property string $patronymic
  * @property int $position_id
  * @property-read \App\Models\JobPosition $position
  * @method static \Illuminate\Database\Eloquent\Builder|Employee newModelQuery()
@@ -34,6 +34,8 @@ class Employee extends Model
         'last_name',
         'patronymic'
     ];
+
+    public $timestamps = false;
 
     public function position(): BelongsTo
     {

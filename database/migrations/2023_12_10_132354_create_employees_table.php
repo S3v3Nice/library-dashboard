@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
-            $table->integer('last_name');
-            $table->integer('patronymic');
+            $table->string('last_name');
+            $table->string('patronymic');
             $table->foreignId('position_id')
                   ->constrained('job_positions')
                   ->cascadeOnDelete();

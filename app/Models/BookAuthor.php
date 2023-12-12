@@ -34,6 +34,8 @@ class BookAuthor extends Model
         'patronymic',
     ];
 
+    public $timestamps = false;
+
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);

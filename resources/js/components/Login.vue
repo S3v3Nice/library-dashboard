@@ -14,7 +14,6 @@ const loginData = ref({
 const errors = ref({})
 
 async function login() {
-  await axios.get('/sanctum/csrf-cookie')
   await axios.post('/login', loginData.value).then((response) => {
     if (!response.data.success) {
       errors.value = response.data.errors
