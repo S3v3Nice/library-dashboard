@@ -3,6 +3,7 @@ import {onMounted, ref} from 'vue';
 import {Modal} from 'bootstrap';
 import axios from 'axios';
 
+const isLoading = ref(false)
 const readers = ref([])
 const editedReader = ref({})
 const addReaderForm = ref(null)
@@ -20,9 +21,11 @@ onMounted(() => {
 })
 
 async function refreshReaders() {
+  isLoading.value = true
   await axios.get('/sanctum/csrf-cookie')
   await axios.get('/api/readers').then((response) => {
     readers.value = response.data
+    isLoading.value = false
   })
 }
 
@@ -88,7 +91,6 @@ function formatDate(dateString) {
 
 <template>
   <div>
-    <!-- Кнопка для открытия формы добавления нового читателя -->
     <button @click="showAddForm" class="btn btn-primary mb-3 float-end">
       <i class="bi bi-plus"></i> Добавить читателя
     </button>
@@ -106,7 +108,16 @@ function formatDate(dateString) {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="reader in readers" :key="reader.id">
+      <tr v-if="isLoading">
+        <td colspan="100%">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Загрузка...</span>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr v-else v-for="reader in readers" :key="reader.id">
         <td>{{ reader.first_name }}</td>
         <td>{{ reader.last_name }}</td>
         <td>{{ reader.patronymic }}</td>
@@ -306,12 +317,10 @@ function formatDate(dateString) {
   background-color: #709CFF;
 }
 
-/* Дополнительные стили для кнопок внутри таблицы */
 .table .btn {
   margin-right: 2px;
 }
 
-/* Стили для модальных окон (подстройте под свой дизайн) */
 .modal-content {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -333,8 +342,25 @@ function formatDate(dateString) {
   border-top: 1px solid #dee2e6;
 }
 
-/* Дополнительные стили для кнопок внутри модальных окон */
 .modal-footer .btn {
   margin-right: 5px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border: 0.25rem solid rgba(0, 0, 0, 0.125);
+  border-right: 0.25rem solid #709CFF;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

@@ -9,14 +9,6 @@ import JobPositions from "../components/dashboard-sections/JobPositions.vue";
 import Employees from "../components/dashboard-sections/Employees.vue";
 import Readers from "../components/dashboard-sections/Readers.vue";
 
-function authenticated(to, from, next) {
-
-}
-
-function guest(to, from, next) {
-
-}
-
 export default [
     {
         path: '/',

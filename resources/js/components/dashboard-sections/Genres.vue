@@ -3,6 +3,7 @@ import {onMounted, ref} from 'vue';
 import {Modal} from 'bootstrap';
 import axios from 'axios';
 
+const isLoading = ref(false)
 const genres = ref([])
 const editedGenre = ref({})
 const addGenreForm = ref(null)
@@ -20,10 +21,12 @@ onMounted(() => {
 })
 
 async function refreshGenres() {
+  isLoading.value = true
   await axios.get('/sanctum/csrf-cookie')
   await axios.get('/api/genres').then((response) => {
     genres.value = response.data
-  })
+    isLoading.value = false
+  });
 }
 
 function showAddForm() {
@@ -82,7 +85,6 @@ function clearFormErrors() {
 
 <template>
   <div>
-    <!-- Кнопка для открытия формы добавления нового жанра книги -->
     <button @click="showAddForm" class="btn btn-primary mb-3 float-end">
       <i class="bi bi-plus"></i> Добавить жанр
     </button>
@@ -95,8 +97,18 @@ function clearFormErrors() {
         <th scope="col">Действия</th>
       </tr>
       </thead>
+
       <tbody>
-      <tr v-for="genre in genres" :key="genre.id">
+      <tr v-if="isLoading">
+        <td colspan="100%">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Загрузка...</span>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr v-else v-for="genre in genres" :key="genre.id">
         <td>{{ genre.name }}</td>
         <td>
           <button @click="showEditForm(genre)" class="btn btn-sm btn-success me-2">
@@ -220,12 +232,10 @@ function clearFormErrors() {
   background-color: #709CFF;
 }
 
-/* Дополнительные стили для кнопок внутри таблицы */
 .table .btn {
   margin-right: 2px;
 }
 
-/* Стили для модальных окон (подстройте под свой дизайн) */
 .modal-content {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -247,8 +257,25 @@ function clearFormErrors() {
   border-top: 1px solid #dee2e6;
 }
 
-/* Дополнительные стили для кнопок внутри модальных окон */
 .modal-footer .btn {
   margin-right: 5px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border: 0.25rem solid rgba(0, 0, 0, 0.125);
+  border-right: 0.25rem solid #709CFF;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
